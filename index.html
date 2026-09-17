@@ -1550,27 +1550,65 @@
   var ovGuide = document.getElementById('mylistGuide');
   var ovDl = document.getElementById('mylistDl');
   var ovEmpty = document.getElementById('mylistEmpty');
-  var lastCanvas = null;
+  var lastCanvas = null, lastBlob = null, lastObjUrl = null;
+  var FILE_NAME = 'dance-synergy-revival-mylist.png';
   var GUIDE_FALLBACK = 'ダウンロードできない場合は、画像を長押し（PCは右クリック）→「写真に保存」/「画像を保存」で端末に保存してください';
+  var IS_TOUCH = (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  function prepareBlob(canvas){
+    lastBlob = null;
+    ovDl.textContent = '画像を準備中…';
+    ovDl.setAttribute('aria-disabled', 'true');
+    ovDl.removeAttribute('href');
+    canvas.toBlob(function(blob){
+      lastBlob = blob;
+      ovDl.textContent = '画像をダウンロード';
+      ovDl.removeAttribute('aria-disabled');
+      if (lastObjUrl){ try{ URL.revokeObjectURL(lastObjUrl); }catch(_){} lastObjUrl = null; }
+      if (blob){ lastObjUrl = URL.createObjectURL(blob); ovDl.href = lastObjUrl; }
+    }, 'image/png');
+  }
+  function canShareFile(file){
+    return !!(navigator.share && navigator.canShare && file && navigator.canShare({ files: [file] }));
+  }
   ovDl.addEventListener('click', function(e){
-    if (!(window.claude && typeof window.claude.use === 'function') || !lastCanvas) return; /* 通常環境: <a download> に任せる */
-    e.preventDefault();
-    var c = lastCanvas;
-    window.claude.use('downloads').then(function(dl){
-      if (!dl){ ovGuide.textContent = GUIDE_FALLBACK; return; }
-      c.toBlob(function(blob){
-        if (!blob){ ovGuide.textContent = GUIDE_FALLBACK; return; }
-        ovDl.textContent = '保存中…';
-        dl.save({ filename: 'dance-synergy-revival-mylist.png', data: blob }).then(function(){
-          ovDl.textContent = '保存しました';
-          setTimeout(function(){ ovDl.textContent = '画像をダウンロード'; }, 2500);
-        }).catch(function(err){
-          ovDl.textContent = '画像をダウンロード';
-          if (err && err.code === 'declined') return;
+    if (!lastCanvas) return;
+    if (!lastBlob){ e.preventDefault(); return; } /* 準備中は無視 */
+    /* 1) claude.ai Artifact: 公式の保存機能 */
+    if (window.claude && typeof window.claude.use === 'function'){
+      e.preventDefault();
+      var c = lastCanvas;
+      window.claude.use('downloads').then(function(dl){
+        if (!dl){ ovGuide.textContent = GUIDE_FALLBACK; return; }
+        var go = function(blob){
+          if (!blob){ ovGuide.textContent = GUIDE_FALLBACK; return; }
+          ovDl.textContent = '保存中…';
+          dl.save({ filename: FILE_NAME, data: blob }).then(function(){
+            ovDl.textContent = '保存しました';
+            setTimeout(function(){ ovDl.textContent = '画像をダウンロード'; }, 2500);
+          }).catch(function(err){
+            ovDl.textContent = '画像をダウンロード';
+            if (err && err.code === 'declined') return;
+            ovGuide.textContent = GUIDE_FALLBACK;
+          });
+        };
+        if (lastBlob) go(lastBlob); else c.toBlob(go, 'image/png');
+      });
+      return;
+    }
+    /* 2) スマホ（iPhone/Android）: 共有シート → 「画像を保存」 */
+    if (IS_TOUCH && lastBlob && typeof File === 'function'){
+      var file = new File([lastBlob], FILE_NAME, { type: 'image/png' });
+      if (canShareFile(file)){
+        e.preventDefault();
+        navigator.share({ files: [file], title: 'DANCE SYNERGY REVIVAL 自分用リスト' }).catch(function(err){
+          if (err && err.name === 'AbortError') return;
           ovGuide.textContent = GUIDE_FALLBACK;
         });
-      }, 'image/png');
-    });
+        return;
+      }
+    }
+    /* 3) PCブラウザ: blob: URL の <a download> に任せる（href は prepareBlob で設定済み） */
+    if (!ovDl.getAttribute('href')){ e.preventDefault(); ovGuide.textContent = GUIDE_FALLBACK; }
   });
 
   function openMyList(){
@@ -1584,10 +1622,10 @@
     } else {
       lastCanvas = buildMyListCanvas();
       var url = lastCanvas.toDataURL('image/png');
+      prepareBlob(lastCanvas);
       ovImg.src = url;
       ovImg.hidden = false;
       ovGuide.hidden = false;
-      ovDl.href = url;
       ovDl.hidden = false;
       ovEmpty.hidden = true;
     }
