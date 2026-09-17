@@ -1,0 +1,1617 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DANCE SYNERGY REVIVAL 出演表</title>
+<style>
+  :root{
+    --orange:#E4561E;
+    --orange-soft:#FCE6DC;
+    --navy:#1F2C5C;
+    --navy-soft:#E6EAF5;
+    --blue:#3F7ED8;
+    --blue-soft:#E3EDFA;
+    --yellow:#F3B640;
+    --yellow-soft:#FDF1D3;
+    --bg:#FFF8F2;
+    --card:#FFFFFF;
+    --line:#EADFD5;
+    --text:#26262B;
+    --muted:#7A7068;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden}
+  body{
+    font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;
+    -webkit-text-size-adjust:100%;
+  }
+
+  /* ---------- header ---------- */
+  .hdr{
+    background:var(--orange);color:#fff;padding:14px 16px;
+    display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between;
+  }
+  .hdr h1{margin:0 0 4px;font-size:20px;letter-spacing:.04em;line-height:1.3}
+  .hdr h1 .bar{display:inline-block;width:26px;height:4px;background:var(--yellow);vertical-align:middle;margin-right:8px;border-radius:2px}
+  .hdr .meta{margin:0;font-size:13px;color:#fff}
+  .hdr .src{margin:6px 0 0;font-size:11px;color:rgba(255,255,255,.75)}
+  .hdr-main{min-width:0;flex:1 1 260px}
+  .btn-print{
+    flex:0 0 auto;background:var(--navy);color:#fff;border:0;border-radius:6px;
+    padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+  }
+  .btn-print:hover{background:#2A3A75}
+  .btn-print.btn-sm{padding:6px 12px;font-size:13px}
+  #btnMyList2,#btnMyList2:hover{background:var(--yellow);color:var(--navy)}
+
+  /* ---------- 自分用リスト overlay ---------- */
+  html.mylist-open,body.mylist-open{overflow:hidden !important}
+  .mylist-ov{
+    position:fixed;inset:0;z-index:100;background:rgba(31,44,92,.92);
+    padding:18px 12px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  }
+  .mylist-ov[hidden]{display:none}
+  .mylist-card{
+    background:#fff;border-radius:12px;padding:14px 14px 18px;
+    max-width:600px;margin:0 auto;
+  }
+  .mylist-head{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .mylist-head strong{font-size:16px;color:var(--navy)}
+  .btn-close{
+    background:var(--navy);color:#fff;border:0;border-radius:6px;padding:7px 14px;
+    font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
+  }
+  #mylistImg{display:block;width:100%;max-width:560px;margin:0 auto;border-radius:10px;border:1px solid var(--line)}
+  #mylistImg[hidden]{display:none}
+  .mylist-guide{font-size:13px;color:var(--text);line-height:1.6;margin:12px 0 0;text-align:center}
+  .mylist-guide[hidden]{display:none}
+  .mylist-dl{
+    display:block;width:fit-content;margin:12px auto 0;background:var(--orange);color:#fff;
+    text-decoration:none;border-radius:6px;padding:9px 16px;font-size:14px;font-weight:700;
+  }
+  .mylist-dl[hidden]{display:none}
+  .mylist-empty{font-size:14px;color:var(--text);line-height:1.7;margin:8px 0 0}
+  .mylist-empty[hidden]{display:none}
+
+  /* ---------- sticky top (tabs + selection) ---------- */
+  .stickytop{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+  .tabs{display:flex;gap:6px;padding:8px 12px 0}
+  .tab{
+    flex:1 1 0;min-width:0;background:var(--navy-soft);color:var(--navy);border:0;
+    border-radius:7px 7px 0 0;padding:10px 6px;font-size:14px;font-weight:700;
+    cursor:pointer;font-family:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .tab[aria-selected="true"]{background:var(--navy);color:#fff}
+  .selpanel{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 12px 12px;background:var(--navy);color:#fff;border-top:3px solid var(--orange);max-height:40vh;overflow-y:auto;box-shadow:0 -4px 16px rgba(27,42,74,.18)}
+  body.has-sel main{padding-bottom:42vh}
+  .selpanel-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .selpanel-head strong{font-size:15px;color:#fff}
+  .selpanel-btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn-clear{background:transparent;color:#fff;border:1px solid #fff;border-radius:6px;padding:5px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+  .sel-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .sel-list li{background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:13px;line-height:1.5}
+  .sel-name{font-weight:700;color:var(--navy)}
+  .sel-declared{color:var(--orange);font-weight:700;margin-left:3px}
+  .sel-arrow{color:var(--muted);margin:0 5px}
+  .sel-undisclosed{color:var(--muted);font-size:12px;margin-left:5px}
+  .sel-none{color:var(--muted)}
+  .sel-handle{font-size:11px;margin-left:5px}
+
+  /* ---------- instagram link ---------- */
+  a.ig{color:var(--blue);text-decoration:none}
+  a.ig:hover{text-decoration:underline}
+  a.ig:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+
+  /* ---------- layout ---------- */
+  main{padding:14px 12px 0;max-width:1180px;margin:0 auto}
+  .panel[hidden]{display:none}
+  .note{font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.55}
+  h2.sec{
+    font-size:16px;color:var(--navy);margin:22px 0 10px;padding-left:9px;
+    border-left:4px solid var(--orange);line-height:1.4;
+  }
+
+  /* ---------- number cards ---------- */
+  .cards{display:grid;grid-template-columns:1fr;gap:12px}
+  @media (min-width:700px){.cards{grid-template-columns:repeat(2,1fr)}}
+  @media (min-width:1050px){.cards{grid-template-columns:repeat(3,1fr)}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:12px 13px 13px}
+  .card-head{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;margin-bottom:4px}
+  .card-name{font-size:16px;font-weight:700;color:var(--navy)}
+  .card-count{font-size:12px;color:#fff;background:var(--blue);border-radius:11px;padding:2px 9px;white-space:nowrap}
+  .card-choreo{font-size:12px;color:var(--muted);margin:0 0 9px}
+  .card-note{font-size:13px;color:var(--orange);background:var(--orange-soft);border-radius:6px;padding:8px 10px;margin:0}
+  .card-sub{font-size:12px;font-weight:700;color:var(--navy);margin:4px 0 6px;padding:2px 0;border-bottom:1px dashed var(--line)}
+  .members{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px}
+  .m{
+    display:flex;flex-direction:column;gap:1px;background:#FBF6F1;border:1px solid var(--line);
+    border-radius:6px;padding:4px 8px;min-width:0;cursor:pointer;
+  }
+  .m b{font-size:13px;font-weight:700;color:var(--text);line-height:1.35}
+  .m i{font-size:10px;font-style:normal;color:var(--muted);line-height:1.35;word-break:break-all}
+  .m.on{background:var(--yellow-soft);border-color:var(--yellow)}
+  .m.on b{color:var(--navy)}
+  .m:focus-visible,.ulist li:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+
+  /* ---------- undisclosed box ---------- */
+  .ubox{background:#fff;border:1px dashed var(--orange);border-radius:9px;padding:12px 13px;margin-top:14px}
+  .ubox h3{margin:0 0 4px;font-size:15px;color:var(--navy)}
+  .ubox .note{margin-bottom:10px}
+  .ulist{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+  .ulist li{display:flex;flex-wrap:wrap;gap:4px 7px;align-items:center;background:#FBF6F1;border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}
+  .ulist li.on{background:var(--yellow-soft);border-color:var(--yellow)}
+  .ulist li.on .un b{color:var(--navy)}
+  .ulist .un{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .ulist .un b{font-size:13px;line-height:1.35}
+  .ulist .un i{font-size:10px;font-style:normal;color:var(--muted);line-height:1.35;word-break:break-all}
+  .badge-undisclosed{
+    display:inline-block;background:var(--orange);color:#fff;font-size:10px;font-weight:700;
+    border-radius:4px;padding:2px 6px;white-space:nowrap;line-height:1.4;
+  }
+
+  /* ---------- dancer filter ---------- */
+  .filterbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  #q{
+    flex:1 1 200px;min-width:0;padding:9px 11px;font-size:15px;font-family:inherit;
+    border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--text);
+  }
+  .grp{margin-bottom:16px}
+  .grp h3{font-size:13px;color:var(--navy);background:var(--navy-soft);border-radius:5px;padding:5px 9px;margin:0 0 8px}
+  .cbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+  .cb{display:flex;gap:7px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 8px;cursor:pointer;min-width:0}
+  .cb input{margin:2px 0 0;flex:0 0 auto;accent-color:var(--orange);width:16px;height:16px}
+  .cb .tx{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .cb .tx b{font-size:13px;font-weight:700;line-height:1.35}
+  .cb .tx i{font-size:10px;font-style:normal;color:var(--muted);line-height:1.35;word-break:break-all}
+  .cb.on{background:var(--yellow-soft);border-color:var(--yellow)}
+  .cb.on .tx b{color:var(--navy)}
+  .cb[hidden]{display:none}
+  .grp[hidden]{display:none}
+  .empty{font-size:13px;color:var(--muted);padding:10px 2px}
+
+  /* ---------- matrix ---------- */
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px;background:#fff}
+  table.mx{border-collapse:collapse;font-size:12px;background:#fff}
+  table.mx th,table.mx td{border:1px solid var(--line);padding:0}
+  table.mx thead th{background:var(--navy);color:#fff;font-weight:700;vertical-align:bottom;padding:6px 3px}
+  table.mx thead th.vt{writing-mode:vertical-rl;text-orientation:mixed;white-space:nowrap;height:108px;width:26px;font-size:11px;line-height:1.1}
+  table.mx thead th.nm{writing-mode:horizontal-tb;text-align:left;padding:6px 8px;min-width:132px}
+  table.mx thead th.un{writing-mode:vertical-rl;height:108px;width:26px;font-size:11px;background:var(--orange)}
+  table.mx td{text-align:center;height:26px}
+  table.mx td.nm{text-align:left;padding:3px 8px;white-space:nowrap}
+  table.mx td.nm b{font-size:12px;font-weight:700;line-height:1.3;display:block}
+  table.mx td.nm i{font-size:9px;font-style:normal;color:var(--muted);line-height:1.3;display:block;font-weight:400}
+  table.mx th.nm-cell,table.mx td.nm{position:sticky;left:0;z-index:2;background:#fff;border-right:2px solid var(--navy)}
+  table.mx thead th.nm{position:sticky;left:0;z-index:3;background:var(--navy)}
+  table.mx tbody tr:nth-child(even) td{background:#FBF9F4}
+  table.mx tbody tr:nth-child(even) td.nm{background:#FBF9F4}
+  table.mx tbody tr.on td{background:var(--orange-soft)}
+  table.mx tbody tr.on td.nm{background:var(--orange-soft)}
+  .dot{color:var(--orange);font-size:13px;line-height:1}
+  .mini-und{color:var(--orange);font-size:10px;font-weight:700}
+
+  /* ---------- withdrawn ---------- */
+  footer{max-width:1180px;margin:26px auto 0;padding:14px 12px 30px;border-top:1px solid var(--line)}
+  footer h2{font-size:14px;color:var(--navy);margin:0 0 6px}
+  .wd{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+  .wd li{font-size:12px;color:var(--muted);line-height:1.5}
+  .wd b{color:var(--text);font-weight:700}
+  .wd i{font-style:normal}
+  .foot-src{font-size:11px;color:var(--muted);margin:12px 0 0}
+  .print-only{display:none}
+
+  /* ---------- print ---------- */
+  @page{size:A4 portrait;margin:12mm}
+  @media print{
+    :root{--bg:#fff;--card:#fff;--orange:#000;--navy:#000;--muted:#333;--line:#999;--orange-soft:#fff;--navy-soft:#fff;--blue:#000;--blue-soft:#fff;--yellow:#000;--yellow-soft:#fff}
+    html,body{background:#fff;color:#000;font-size:10pt;overflow:visible}
+    body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .hdr{background:#fff;color:#000;border-bottom:2px solid #000;padding:0 0 6px;display:block}
+    .hdr h1{font-size:15pt}
+    .hdr h1 .bar{background:#000}
+    .hdr .meta{color:#000;font-size:9pt}
+    .hdr .src{color:#333;font-size:8pt}
+    .btn-print,.tabs,.filterbar,#panel-dancers,.no-print,#mylist{display:none !important}
+    .stickytop{position:static;border:0;background:#fff}
+    .selpanel{position:static;box-shadow:none;max-height:none;overflow:visible;background:#fff;color:#000;border-top:1px solid #000;padding:6px 0}
+    .selpanel-head strong{color:#000}
+    .btn-clear{background:#fff;color:#000;border-color:#000}
+    body.has-sel main{padding-bottom:0}
+    .sel-list li{border:1px solid #666;font-size:9pt}
+    main{padding:0;max-width:none}
+    #panel-numbers,#panel-table{display:block !important}
+    h2.sec{font-size:12pt;border-left:3px solid #000;margin:10mm 0 4mm;break-after:avoid}
+    .print-only{display:block}
+    .cards{display:block;columns:2;column-gap:4mm}
+    .card:not([hidden]){display:inline-block;width:100%;margin:0 0 4mm}
+    .card[hidden]{display:none !important}
+    .card,.ubox,.grp{break-inside:avoid;page-break-inside:avoid;border:1px solid #666}
+    .card-count{background:#000;color:#fff}
+    .m{background:#fff;border:1px solid #bbb;padding:2px 5px}
+    .m b{font-size:9pt}
+    .m i{font-size:6.5pt}
+    .badge-undisclosed{background:#000;color:#fff;font-size:7pt}
+    .tablewrap{overflow:visible;border:0}
+    table.mx{font-size:9px;width:100%;table-layout:fixed;border-color:#999}
+    table.mx thead{display:table-header-group}
+    table.mx tr{break-inside:avoid;page-break-inside:avoid}
+    table.mx thead th{background:#fff;color:#000;border:1px solid #666;padding:2px 1px}
+    table.mx thead th.vt,table.mx thead th.un{height:70px;width:auto;font-size:8px;background:#fff;color:#000}
+    table.mx thead th.nm{position:static;background:#fff;color:#000;width:30mm;min-width:0}
+    table.mx td{height:auto;padding:0;border:1px solid #999}
+    table.mx td.nm{position:static;white-space:normal;padding:1px 3px}
+    table.mx td.nm b{font-size:8.5px}
+    table.mx td.nm i{font-size:6px}
+    table.mx tbody tr:nth-child(even) td,table.mx tbody tr:nth-child(even) td.nm,
+    table.mx tbody tr.on td,table.mx tbody tr.on td.nm{background:#fff}
+    .dot{color:#000;font-size:9px}
+    .mini-und{color:#000;font-size:7px}
+    footer{break-inside:avoid;margin-top:8mm}
+    .p-hide{display:none !important}
+    a.ig,a.ig:visited{color:inherit;text-decoration:none}
+    a[href]::after{content:none !important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-main">
+    <h1><span class="bar"></span>DANCE SYNERGY REVIVAL</h1>
+    <p class="meta" id="mDate"></p>
+    <p class="meta" id="mTime"></p>
+    <p class="src" id="mSrc"></p>
+  </div>
+  <button type="button" class="btn-print" id="btnMyList">自分用リスト</button>
+</header>
+
+<div class="stickytop">
+  <nav class="tabs" role="tablist" aria-label="表示切替">
+    <button type="button" class="tab" role="tab" id="tab-numbers" aria-selected="true" data-panel="panel-numbers">ナンバー別</button>
+    <button type="button" class="tab" role="tab" id="tab-dancers" aria-selected="false" data-panel="panel-dancers">ダンサーで絞る</button>
+    <button type="button" class="tab" role="tab" id="tab-table" aria-selected="false" data-panel="panel-table">一覧表</button>
+  </nav>
+  <div class="selpanel" id="selPanel" hidden>
+    <div class="selpanel-head">
+      <strong id="selCount">選択中 0名</strong>
+      <span class="selpanel-btns">
+        <button type="button" class="btn-print btn-sm" id="btnMyList2">自分用リスト</button>
+        <button type="button" class="btn-clear" id="clearAll">全解除</button>
+      </span>
+    </div>
+    <ul class="sel-list" id="selList"></ul>
+  </div>
+</div>
+
+<main>
+  <section class="panel" id="panel-numbers" role="tabpanel" aria-labelledby="tab-numbers">
+    <h2 class="sec print-only">ナンバー別 出演表</h2>
+    <p class="note" id="numNote"></p>
+    <div class="cards" id="cards"></div>
+    <div class="ubox" id="ubox"></div>
+  </section>
+
+  <section class="panel" id="panel-dancers" role="tabpanel" aria-labelledby="tab-dancers" hidden>
+    <div class="filterbar">
+      <input type="search" id="q" placeholder="名前・@ハンドルで検索" autocomplete="off">
+    </div>
+    <p class="note">チェックしたダンサーの出演ナンバーが画面下に出ます。「ナンバー別」タブでは選択した人がオレンジで強調されます。</p>
+    <div id="dancerList"></div>
+    <p class="empty" id="noHit" hidden>該当するダンサーがいません</p>
+  </section>
+
+  <section class="panel" id="panel-table" role="tabpanel" aria-labelledby="tab-table" hidden>
+    <h2 class="sec print-only">全ダンサー × 全ナンバー 一覧表</h2>
+    <p class="note">●＝出演。「未発表」列は宣言作品数と公開済みナンバーの差分です。<span class="no-print">横スクロールできます。</span></p>
+    <div class="tablewrap">
+      <table class="mx" id="matrix"></table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <h2>出演辞退（公式発表）</h2>
+  <ul class="wd" id="wdList"></ul>
+  <p class="foot-src" id="footSrc"></p>
+</footer>
+
+<div class="mylist-ov" id="mylist" hidden>
+  <div class="mylist-card" id="mylistCard">
+    <div class="mylist-head">
+      <strong>自分用リスト</strong>
+      <button type="button" class="btn-close" id="mylistClose">閉じる</button>
+    </div>
+    <img id="mylistImg" alt="自分用リスト（選択したダンサーの出演ナンバー一覧画像）" hidden>
+    <p class="mylist-guide" id="mylistGuide" hidden>画像を長押し（PCは右クリック）→「写真に保存」/「画像を保存」で端末に保存できます</p>
+    <a class="mylist-dl" id="mylistDl" download="dance-synergy-revival-mylist.png" hidden>画像をダウンロード</a>
+    <p class="mylist-empty" id="mylistEmpty" hidden>ダンサーを選択してください（ナンバー別で名前をタップ、または「ダンサーで絞る」でチェック）</p>
+  </div>
+</div>
+
+<script id="data" type="application/json">{
+ "event": {
+  "title": "DANCE SYNERGY REVIVAL",
+  "date": "2026.9.22（火・祝）",
+  "venue": "鶴見区民センター 大ホール",
+  "time": "開場17:00 / 開演17:45 / 終演予定19:15〜19:45",
+  "mc": "Tatsuya",
+  "source": "https://www.instagram.com/dance_synergy_project/",
+  "fetched": "2026-09-17"
+ },
+ "dancers": [
+  ["777Lee",   "777lee1963",
+   2,
+   1
+  ],
+  ["Akari",   "akr.1004",
+   1,
+   1
+  ],
+  ["AKIRA",   "a_killerr",
+   1,
+   1
+  ],
+  ["Andrew",   "_andrew_k_0502",
+   1,
+   1
+  ],
+  ["AOTO",   "aotap.14",
+   1,
+   1
+  ],
+  ["ayako",   "ayako_d_day",
+   1,
+   1
+  ],
+  ["ayumi",   "ayumix1188",
+   3,
+   1
+  ],
+  ["cocoro",   "ckr_0276",
+   1,
+   1
+  ],
+  ["Dai",   "daaidayo",
+   1,
+   1
+  ],
+  ["Edjic-t@kae",   "stitch_edjic",
+   1,
+   1
+  ],
+  ["FUYUKA",   "win.ter0123",
+   3,
+   1
+  ],
+  ["haku",   "_haku__89",
+   1,
+   1
+  ],
+  ["haruka",   "_haru0019",
+   1,
+   1
+  ],
+  ["hazu",   "h.a.z.u___",
+   1,
+   1
+  ],
+  ["Hero-Cho",   "westdance",
+   2,
+   1
+  ],
+  ["Hikaru",   "hkrymmt",
+   1,
+   1
+  ],
+  ["HIROMI",   "hiixxg0",
+   1,
+   1
+  ],
+  ["hiyori",   "_hiyowhatsup_",
+   2,
+   1
+  ],
+  ["honoka",   "___hnk.321",
+   2,
+   1
+  ],
+  ["io",   "odoru_lion_pineapple",
+   2,
+   1
+  ],
+  ["JURI",   "lebensstern.605",
+   1,
+   1
+  ],
+  ["K@na",   "bananajuice0601",
+   1,
+   1
+  ],
+  ["kaede",   "kaede_.libre",
+   1,
+   1
+  ],
+  ["Kaede",   "____kaede_____",
+   1,
+   1
+  ],
+  ["KANTA",   "kanta2129",
+   1,
+   1
+  ],
+  ["kazu",   "kazu_desu_1988",
+   1,
+   1
+  ],
+  ["Kenty",   "kenty_ada",
+   1,
+   1
+  ],
+  ["KIHO",   "11_kh_00",
+   1,
+   1
+  ],
+  ["Koari",   "koa_ringooo",
+   3,
+   1
+  ],
+  ["KohTa",   "kohta_park",
+   1,
+   1
+  ],
+  ["KYOKA",   "kyoca139",
+   1,
+   1
+  ],
+  ["SAE",   "saep0m.17",
+   1,
+   2
+  ],
+  ["SAiRA",   "is_saiii",
+   1,
+   2
+  ],
+  ["Sakura",   "63rarara",
+   1,
+   2
+  ],
+  ["SAKURA",   "39ra_0123",
+   1,
+   2
+  ],
+  ["Sana",   "sananananananan",
+   1,
+   2
+  ],
+  ["SAORI",   "saori_tn0117",
+   3,
+   2
+  ],
+  ["SAYUKI",   "sayuki.d",
+   1,
+   2
+  ],
+  ["SE-YA",   "se_yagonkabigon",
+   1,
+   2
+  ],
+  ["SEZZ",   "mizse______",
+   1,
+   2
+  ],
+  ["Serina",   "tpfl_sk",
+   1,
+   2
+  ],
+  ["SHINNOSUKE",   "unoshinnosuke",
+   2,
+   2
+  ],
+  ["Shion",   "shion___0506",
+   1,
+   2
+  ],
+  ["shiori",   "__kinapu__",
+   1,
+   2
+  ],
+  ["SHIRUSU",   "shi_da8",
+   2,
+   2
+  ],
+  ["Shoya",   "show__yeah",
+   3,
+   2
+  ],
+  ["Shu",   "shu.0995_74",
+   1,
+   2
+  ],
+  ["Syunta",   "sasasyun.__",
+   1,
+   2
+  ],
+  ["あーか",   "a_ka0221",
+   2,
+   3
+  ],
+  ["あかねこ",   "akaneko_smile",
+   3,
+   3
+  ],
+  ["おがりさ",   "r4381ii",
+   2,
+   3
+  ],
+  ["カイト",   "kkkaittt455",
+   1,
+   3
+  ],
+  ["かえぴょん",   "_kae_pyon_",
+   3,
+   3
+  ],
+  ["ぎー",   "__giinanoka__",
+   2,
+   3
+  ],
+  ["ぐゥちゃん",   "gustagram7",
+   1,
+   3
+  ],
+  ["こころ",   "shiro_kokoro17",
+   1,
+   3
+  ],
+  ["ざいはな",   "0822_zai87",
+   1,
+   3
+  ],
+  ["さつき",   "stk_ymsk",
+   2,
+   3
+  ],
+  ["ずーみー",   "yuto_zumii",
+   1,
+   3
+  ],
+  ["ちか",   "chika.1117",
+   3,
+   3
+  ],
+  ["なちゃん",   "quokka_wallaby0317",
+   1,
+   3
+  ],
+  ["まさはる",   "vejllo",
+   1,
+   3
+  ],
+  ["まな",   "mana.hdec12",
+   3,
+   3
+  ],
+  ["めい菜",   "meinaaaaa22",
+   2,
+   3
+  ],
+  ["りゅーまゆ",   "maaaaaaau02",
+   2,
+   3
+  ],
+  ["TACT",   "tact_kuto",
+   1,
+   4
+  ],
+  ["Taiga",   "taigabeatbox",
+   1,
+   4
+  ],
+  ["TAISHO",   "bboy_taisho",
+   1,
+   4
+  ],
+  ["TEiRU",   "teirumiracle100",
+   1,
+   4
+  ],
+  ["Tiger",   "___t_i_g___",
+   3,
+   4
+  ],
+  ["Tomohiro",   "k.tom._123",
+   1,
+   4
+  ],
+  ["Tooi",   "tooi.lockin_0226",
+   4,
+   4
+  ],
+  ["TOSHI",   "shya7toshi1986",
+   1,
+   4
+  ],
+  ["Yukako",   "2525gemelos",
+   1,
+   4
+  ],
+  ["YUKI",   "yukipiyo5656",
+   1,
+   4
+  ],
+  ["Yuma",   "y__knk",
+   1,
+   4
+  ],
+  ["YURI",   "yuriiiiicjb",
+   3,
+   4
+  ],
+  ["yuuki",   "ykihrkj",
+   1,
+   4
+  ],
+  ["yuuna",   "yunachan912",
+   1,
+   4
+  ],
+  ["Yuuri",   "yuuri_322_",
+   1,
+   4
+  ],
+  ["Lisa",   "__liiisa_m03",
+   1,
+   5
+  ],
+  ["Maco",   "maco_181111",
+   2,
+   5
+  ],
+  ["MAYU",   "m_ayuuu.915",
+   1,
+   5
+  ],
+  ["mimoe",   "_mimoe117__",
+   1,
+   5
+  ],
+  ["MINAGI",   "minaminagin",
+   1,
+   5
+  ],
+  ["MITSUKI",   "mitsu_ki.87",
+   1,
+   5
+  ],
+  ["miyu.",   "dosan_32",
+   3,
+   5
+  ],
+  ["Mizuki",   "mizuki_s_n",
+   1,
+   5
+  ],
+  ["Mizuki",   "___.miz.__",
+   1,
+   5
+  ],
+  ["Monster",   "monster_beat_box_",
+   1,
+   5
+  ],
+  ["MurM",   "murm1999",
+   1,
+   5
+  ],
+  ["Nanaka",   "naaaa7ka_",
+   1,
+   5
+  ],
+  ["NANAKO",   "n.a_n_a.k.o",
+   2,
+   5
+  ],
+  ["naomotu",   "nisimotuuuuuu",
+   1,
+   5
+  ],
+  ["natsuki",   "_natsuki_takahashi",
+   1,
+   5
+  ],
+  ["Pinya",   "pinya_the_hopper",
+   1,
+   5
+  ],
+  ["亜愛",   "_achika_",
+   1,
+   6
+  ],
+  ["葵",   "aoi_ema0729",
+   1,
+   6
+  ],
+  ["伊藤萌",   "m_o_e_528_mika_n",
+   1,
+   6
+  ],
+  ["花帆",   "pokka2001",
+   1,
+   6
+  ],
+  ["快斗",   "ka__.t0",
+   1,
+   6
+  ],
+  ["彩弥",   "saya____1214",
+   2,
+   6
+  ],
+  ["心優",   "i_am__miyuuuu",
+   1,
+   6
+  ],
+  ["中津円花",   "madon_chan",
+   2,
+   6
+  ],
+  ["斗真",   "toma.j_i",
+   1,
+   6
+  ],
+  ["島原晃介",   "kosuke_shimahara",
+   1,
+   6
+  ],
+  ["島田莉子",   "shimadance",
+   2,
+   6
+  ],
+  ["乃愛",   "noaaastagram",
+   2,
+   6
+  ],
+  ["楓",   "y__kqed929",
+   3,
+   6
+  ],
+  ["名央",   "_nao__.miz_",
+   2,
+   6
+  ],
+  ["翼",   "tsu_bard_",
+   3,
+   6
+  ],
+  ["翔太",   "shota_2523",
+   1,
+   6
+  ],
+  ["梨央",   "__rio0315",
+   1,
+   6
+  ],
+  ["Raiki",   "bboyraiki",
+   1,
+   6
+  ],
+  ["RanRan",   "253suzuran",
+   1,
+   6
+  ],
+  ["REN",   "reeen___unrestrained",
+   1,
+   6
+  ],
+  ["ReN.",   "ren.n_02",
+   3,
+   6
+  ],
+  ["Rentaro",   "ren_f802314",
+   1,
+   6
+  ],
+  ["reo",   "reo5572",
+   1,
+   6
+  ],
+  ["Rico.",   "rc_n_9599",
+   1,
+   6
+  ],
+  ["Riko",   "rikomsd78",
+   1,
+   6
+  ],
+  ["Rina",   "r71_nnk__",
+   1,
+   6
+  ],
+  ["Rio",   "gaoqiaolixu3",
+   2,
+   6
+  ],
+  ["Rukia.",   "ruki_ruki_2525",
+   1,
+   6
+  ],
+  ["ryo",   "florian__062",
+   1,
+   6
+  ],
+  ["RYOby",   "ryo.iwanaga.0411",
+   2,
+   6
+  ]
+ ],
+ "withdrawn": [
+  ["yume",   "____yume99","まなナンバー"  ],
+  ["Nursery",   "nursery_1019","HIROMIナンバー・natsukiナンバー・ずーみーナンバー"  ],
+  ["Rikuto",   "rikuto__1422","natsukiナンバー"  ],
+  ["RYOTA",   "ryota121118","ずーみーナンバー"  ],
+  ["YUKITO",   "yukisekadan","AKIRAナンバー・ずーみーナンバー・natsukiナンバー"  ]
+ ],
+ "numbers": [
+  {
+   "name": "ずーみーナンバー",
+   "choreo": "ずーみー",
+   "post": "DZ4LfFWzjPK",
+   "cast": ["yuto_zumii",    "tooi.lockin_0226","___t_i_g___",    "y__kqed929","a_ka0221",    "shi_da8","_haku__89",    "ryo.iwanaga.0411","n.a_n_a.k.o",    "teirumiracle100"
+   ]
+  },
+  {
+   "name": "円花ナンバー",
+   "choreo": "中津円花",
+   "post": "DZ41Y36z9ro",
+   "cast": ["mana.hdec12",    "madon_chan","_kae_pyon_",    "shiro_kokoro17","dosan_32",    "m_o_e_528_mika_n","win.ter0123",    "tsu_bard_","k.tom._123",    "tpfl_sk","_mimoe117__",    "rikomsd78","saya____1214",    "stk_ymsk"
+   ]
+  },
+  {
+   "name": "HIROMIナンバー",
+   "choreo": "HIROMI",
+   "post": "DZ6LgWRzRrz",
+   "cast": ["show__yeah",    "maco_181111","__rio0315",    "saori_tn0117","westdance",    "39ra_0123","koa_ringooo",    "h.a.z.u___","tsu_bard_",    "saya____1214","mizse______",    "_kae_pyon_","unoshinnosuke",    "_achika_","tooi.lockin_0226",    "hiixxg0"
+   ]
+  },
+  {
+   "name": "natsukiナンバー",
+   "choreo": "natsuki",
+   "post": "DZ7HnYtTlWB",
+   "cast": ["ayumix1188",    "_haru0019","westdance",    "_hiyowhatsup_","___hnk.321",    "odoru_lion_pineapple","kaede_.libre",    "_natsuki_takahashi","gaoqiaolixu3",    "florian__062","ryo.iwanaga.0411",    "saori_tn0117","se_yagonkabigon",    "show__yeah","___t_i_g___",    "tooi.lockin_0226","a_ka0221",    "_nao__.miz_"
+   ]
+  },
+  {
+   "name": "AKIRAナンバー",
+   "choreo": "AKIRA",
+   "post": "DZ9NSQqTHn-",
+   "cast": ["a_killerr",    "ren.n_02","y__knk",    "yunachan912","sayuki.d",    "r4381ii","is_saiii",    "m_ayuuu.915","mitsu_ki.87",    "777lee1963","tooi.lockin_0226",    "aotap.14","bananajuice0601",    "ruki_ruki_2525","shu.0995_74"   ]
+  },
+  {
+   "name": "まなナンバー",
+   "choreo": "まな",
+   "post": "DaACXA8Tkeh",
+   "cast": ["akaneko_smile",    "mana.hdec12","madon_chan",    "maaaaaaau02","shimadance",    "dosan_32","gaoqiaolixu3",    "koa_ringooo","toma.j_i",    "ayumix1188","_andrew_k_0502",    "kosuke_shimahara","stk_ymsk"   ]
+  },
+  {
+   "name": "Shoyaナンバー",
+   "choreo": "Shoya",
+   "post": "DaCkJCVzVIv",
+   "cast": ["show__yeah",    "_nao__.miz_","stitch_edjic",    "lebensstern.605","minaminagin",    "odoru_lion_pineapple","kyoca139",    "___.miz.__","___hnk.321",    "koa_ringooo","__liiisa_m03",    "11_kh_00","saori_tn0117",    "0822_zai87","maco_181111",    "r71_nnk__","tsu_bard_",    "___t_i_g___","777lee1963"   ]
+  },
+  {
+   "name": "あかねこナンバー",
+   "choreo": "あかねこ",
+   "post": "DaE_cGnTI9A",
+   "cast": ["akaneko_smile",    "ckr_0276","akr.1004",    "rc_n_9599","y__kqed929",    "yuriiiiicjb","aoi_ema0729",    "meinaaaaa22","noaaastagram",    "pokka2001","__giinanoka__",    "chika.1117","maaaaaaau02"   ]
+  },
+  {
+   "name": "Sanaナンバー",
+   "choreo": "Sana",
+   "post": "DaIJNw8zR7S",
+   "cast": ["y__kqed929",    "win.ter0123","daaidayo",    "noaaastagram","chika.1117",    "r4381ii","vejllo",    "meinaaaaa22","unoshinnosuke",    "yuriiiiicjb","__giinanoka__",    "ka__.t0"
+   ]
+  },
+  {
+   "name": "TAISHOナンバー",
+   "choreo": "TAISHO",
+   "post": "DaKVJtazwEg",
+   "cast": ["bboy_taisho",    "hkrymmt","kazu_desu_1988",    "pinya_the_hopper","kohta_park",    "bboyraiki","shion___0506",    "ren.n_02","shi_da8",    "shota_2523"
+   ]
+  },
+  {
+   "name": "naomotuナンバー",
+   "choreo": "naomotu",
+   "post": "DaMrBfXzE1F",
+   "cast": ["_kae_pyon_",    "gustagram7","saep0m.17",    "__kinapu__","63rarara",    "shimadance","nisimotuuuuuu",    "naaaa7ka_","n.a_n_a.k.o",    "quokka_wallaby0317","_hiyowhatsup_",    "i_am__miyuuuu","ykihrkj",    "yukipiyo5656"
+   ]
+  },
+  {
+   "name": "Mizukiナンバー",
+   "choreo": "Mizuki",
+   "post": "DaPdZHcTaTp",
+   "cast": ["mizuki_s_n",    "mana.hdec12","ayako_d_day",    "yuuri_322_","2525gemelos",    "yuriiiiicjb","win.ter0123",    "sananananananan","chika.1117",    "dosan_32","akaneko_smile",    "253suzuran","____kaede_____",    "ayumix1188"
+   ]
+  },
+  {
+   "name": "TOSHIナンバー",
+   "choreo": "TOSHI",
+   "post": "DaSGFsFTMZI",
+   "cast": ["ren_f802314",    "taigabeatbox","murm1999",    "monster_beat_box_","shya7toshi1986",    "reeen___unrestrained","kkkaittt455",    "kanta2129","ren.n_02",    "reo5572","kenty_ada",    "tact_kuto","sasasyun.__"   ],
+   "groups": {
+    "ビートボクサー": ["ren_f802314",     "taigabeatbox","murm1999",     "monster_beat_box_"
+    ]
+   }
+  }
+ ]
+}</script>
+<script>
+(function(){
+  "use strict";
+  var DATA = JSON.parse(document.getElementById('data').textContent);
+  var EV = DATA.event;
+  var NUMBERS = DATA.numbers;
+  var CIRCLE = ['0','①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
+  var LS_KEY = 'dsr-2026-09-22-selected';
+
+  /* ---------- 並び順（日本語=五十音 → 英字=A-Z） ---------- */
+  var YOMI = {
+    '亜愛':'あちか','葵':'あおい','伊藤萌':'いとうもえ','花帆':'かほ','快斗':'かいと',
+    '彩弥':'さや','心優':'みゆう','中津円花':'なかつまどか','斗真':'とうま',
+    '島原晃介':'しまはらこうすけ','島田莉子':'しまだりこ','乃愛':'のあ','楓':'かえで',
+    '名央':'なお','翼':'つばさ','翔太':'しょうた','梨央':'りお',
+    'カイト':'かいと','めい菜':'めいな'
+  };
+  // 濁点・半濁点・小書きを五十音の基本音へ寄せる
+  var KANA_BASE = {
+    'が':'か','ぎ':'き','ぐ':'く','げ':'け','ご':'こ',
+    'ざ':'さ','じ':'し','ず':'す','ぜ':'せ','ぞ':'そ',
+    'だ':'た','ぢ':'ち','づ':'つ','で':'て','ど':'と',
+    'ば':'は','び':'ひ','ぶ':'ふ','べ':'へ','ぼ':'ほ',
+    'ぱ':'は','ぴ':'ひ','ぷ':'ふ','ぺ':'へ','ぽ':'ほ',
+    'ゔ':'う',
+    'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お',
+    'っ':'つ','ゃ':'や','ゅ':'ゆ','ょ':'よ','ゎ':'わ','ゕ':'か','ゖ':'け'
+  };
+  var ROWS = [
+    ['あ行','あいうえお'],['か行','かきくけこ'],['さ行','さしすせそ'],['た行','たちつてと'],
+    ['な行','なにぬねの'],['は行','はひふへほ'],['ま行','まみむめも'],['や行','やゆよ'],
+    ['ら行','らりるれろ'],['わ行','わをん']
+  ];
+  // 長音「ー」を直前の母音に開くための段マップ
+  var VOWEL = {};
+  [['あ','あかさたなはまやらわ'],['い','いきしちにひみり'],['う','うくすつぬふむゆる'],
+   ['え','えけせてねへめれ'],['お','おこそとのほもよろを']].forEach(function(p){
+    p[1].split('').forEach(function(c){ VOWEL[c] = p[0]; });
+  });
+  var JA_RE = /[ぁ-ゟ゠-ヿ一-鿿々]/;
+
+  function normKana(s){
+    // カタカナ→ひらがな、濁点/半濁点/小書きを基本音へ、長音は直前の母音に開く
+    s = s.replace(/[ァ-ヶ]/g, function(c){
+      return String.fromCharCode(c.charCodeAt(0) - 0x60);
+    }).replace(/\s/g, '');
+    var out = '';
+    for (var i = 0; i < s.length; i++){
+      var c = s.charAt(i);
+      if (c === 'ー' || c === '―' || c === '−' || c === '-'){
+        out += (VOWEL[out.charAt(out.length - 1)] || '');
+      } else {
+        out += (KANA_BASE[c] || c);
+      }
+    }
+    return out;
+  }
+  function rowIndexOf(ch){
+    for (var i = 0; i < ROWS.length; i++) if (ROWS[i][1].indexOf(ch) >= 0) return i;
+    return ROWS.length; // 未判定は末尾
+  }
+  function sortInfo(name){
+    if (JA_RE.test(name)){
+      var y = normKana(YOMI[name] || name);
+      var gi = rowIndexOf(y.charAt(0));
+      return {ja:true, gi:gi, group:(ROWS[gi] ? ROWS[gi][0] : 'その他'), key:y};
+    }
+    var clean = name.replace(/[^A-Za-z]/g, '');
+    return {ja:false, gi:0, group:(clean.charAt(0) || '#').toUpperCase(), key:clean};
+  }
+
+  var dancers = DATA.dancers.map(function(a){
+    return {name:a[0], handle:a[1], declared:a[2], part:a[3], nums:[], s:sortInfo(a[0])};
+  });
+  dancers.sort(function(a, b){
+    var A = a.s, B = b.s;
+    if (A.ja !== B.ja) return A.ja ? -1 : 1;
+    if (A.ja){
+      if (A.gi !== B.gi) return A.gi - B.gi;
+      if (A.key !== B.key) return A.key < B.key ? -1 : 1;
+    } else {
+      var g = A.group.localeCompare(B.group, 'en', {sensitivity:'base'});
+      if (g) return g;
+      var k = A.key.localeCompare(B.key, 'en', {sensitivity:'base'});
+      if (k) return k;
+    }
+    return a.handle < b.handle ? -1 : (a.handle > b.handle ? 1 : 0);
+  });
+  var byHandle = {};
+  dancers.forEach(function(d){ byHandle[d.handle] = d; });
+  NUMBERS.forEach(function(n, i){
+    n.cast.forEach(function(h){ if (byHandle[h]) byHandle[h].nums.push(i); });
+  });
+  dancers.forEach(function(d){ d.undisclosed = Math.max(0, d.declared - d.nums.length); });
+
+  var selected = new Set();
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (raw) JSON.parse(raw).forEach(function(h){ if (byHandle[h]) selected.add(h); });
+  } catch (e) {}
+  function save(){
+    try { localStorage.setItem(LS_KEY, JSON.stringify(Array.from(selected))); } catch (e) {}
+  }
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function shortName(s){ return s.replace(/ナンバー$/, ''); }
+
+  /* ---------- instagram link（タップしても選択トグルは起こさない） ---------- */
+  function igLink(h, cls){
+    var a = el('a', 'ig' + (cls ? ' ' + cls : ''), '@' + h);
+    a.href = 'https://www.instagram.com/' + h + '/';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.addEventListener('click', function(ev){ ev.stopPropagation(); });
+    a.addEventListener('keydown', function(ev){ ev.stopPropagation(); });
+    return a;
+  }
+
+  /* ---------- 選択トグル ---------- */
+  function toggleHandle(h){
+    if (!byHandle[h]) return;
+    if (selected.has(h)) selected.delete(h); else selected.add(h);
+    save();
+    renderCheckboxes();
+    renderAll();
+  }
+  document.addEventListener('click', function(ev){
+    var t = ev.target.closest ? ev.target.closest('[data-toggle]') : null;
+    if (t) toggleHandle(t.dataset.toggle);
+  });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Enter' && ev.key !== ' ' && ev.key !== 'Spacebar') return;
+    var t = ev.target.closest ? ev.target.closest('[data-toggle]') : null;
+    if (t){ ev.preventDefault(); toggleHandle(t.dataset.toggle); }
+  });
+
+  /* ---------- header ---------- */
+  document.getElementById('mDate').textContent = EV.date + '／' + EV.venue;
+  document.getElementById('mTime').textContent = EV.time + '　MC: ' + EV.mc;
+  document.getElementById('mSrc').textContent = '出典: Instagram @dance_synergy_project（' + EV.fetched + '取得）';
+  document.getElementById('footSrc').textContent = '出典: Instagram @dance_synergy_project（' + EV.fetched + '取得）／辞退者は集計・一覧表に含めていません。';
+  document.getElementById('numNote').textContent =
+    '全' + NUMBERS.length + 'ナンバー／出演ダンサー' + dancers.length + '名（延べ' +
+    NUMBERS.reduce(function(s,n){ return s + n.cast.length; }, 0) +
+    '名）。名前をタップすると選択できます。下の @ハンドルは Instagram へのリンクです。';
+
+  /* ---------- member chip ---------- */
+  function memberChip(h){
+    var d = byHandle[h];
+    var on = selected.has(h);
+    var e = el('span', 'm' + (on ? ' on' : ''));
+    e.dataset.toggle = h;
+    e.setAttribute('role', 'button');
+    e.setAttribute('tabindex', '0');
+    e.setAttribute('aria-pressed', on ? 'true' : 'false');
+    e.appendChild(el('b', null, d ? d.name : h));
+    var i = el('i');
+    i.appendChild(igLink(h));
+    e.appendChild(i);
+    return e;
+  }
+
+  /* ---------- number cards ---------- */
+  // チップは初回に一度だけ作る（毎回作り直すとキーボード操作中のフォーカスが飛ぶ）
+  var cardsBox = document.getElementById('cards');
+  NUMBERS.forEach(function(n, i){
+    var c = el('div', 'card number-card');
+    c.dataset.idx = String(i);
+    var head = el('div', 'card-head');
+    head.appendChild(el('span', 'card-name', n.name));
+    head.appendChild(el('span', 'card-count n-count', n.cast.length ? '出演 ' + n.cast.length + '名' : '未発表'));
+    c.appendChild(head);
+    c.appendChild(el('p', 'card-choreo', '振付: ' + n.choreo));
+    var body = el('div', 'card-body');
+
+    if (!n.cast.length){
+      body.appendChild(el('p', 'card-note', n.note || '出演メンバー未発表（' + EV.fetched + '時点）'));
+    } else {
+      var grouped = [];
+      var used = {};
+      if (n.groups){
+        Object.keys(n.groups).forEach(function(g){
+          var mem = n.groups[g].filter(function(h){ return n.cast.indexOf(h) >= 0; });
+          mem.forEach(function(h){ used[h] = 1; });
+          if (mem.length) grouped.push([g, mem]);
+        });
+      }
+      var rest = n.cast.filter(function(h){ return !used[h]; });
+
+      grouped.forEach(function(g){
+        var sub = el('p', 'card-sub', g[0] + '（' + g[1].length + '名）');
+        sub.dataset.grp = g[1].join(' ');
+        body.appendChild(sub);
+        var wrap = el('div', 'members');
+        g[1].forEach(function(h){ wrap.appendChild(memberChip(h)); });
+        body.appendChild(wrap);
+      });
+      if (rest.length){
+        if (grouped.length){
+          var sub2 = el('p', 'card-sub', 'ダンサー（' + rest.length + '名）');
+          sub2.dataset.grp = rest.join(' ');
+          body.appendChild(sub2);
+        }
+        var w = el('div', 'members');
+        rest.forEach(function(h){ w.appendChild(memberChip(h)); });
+        body.appendChild(w);
+      }
+    }
+
+    c.appendChild(body);
+    cardsBox.appendChild(c);
+  });
+
+  // 画面では常に全ナンバー・全チップを出し、選択者を .m.on で強調する。
+  // 印刷時だけ従来どおり選択者のいるカード／選択者チップだけに絞る（.p-hide）。
+  function renderCards(){
+    var filtering = selected.size > 0;
+    NUMBERS.forEach(function(n, i){
+      var card = cardsBox.children[i];
+      var hit = n.cast.filter(function(h){ return selected.has(h); });
+      card.classList.toggle('p-hide', filtering && hit.length === 0);
+      if (n.cast.length){
+        card.querySelector('.n-count').textContent = filtering && hit.length
+          ? '出演 ' + n.cast.length + '名（該当 ' + hit.length + '名）'
+          : '出演 ' + n.cast.length + '名';
+      }
+    });
+    var chips = cardsBox.querySelectorAll('.m[data-toggle]');
+    for (var k = 0; k < chips.length; k++){
+      var on = selected.has(chips[k].dataset.toggle);
+      chips[k].classList.toggle('on', on);
+      chips[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+      chips[k].classList.toggle('p-hide', filtering && !on);
+    }
+    var subs = cardsBox.querySelectorAll('.card-sub[data-grp]');
+    for (var j = 0; j < subs.length; j++){
+      var mem = subs[j].dataset.grp.split(' ');
+      subs[j].classList.toggle('p-hide', filtering && !mem.some(function(h){ return selected.has(h); }));
+    }
+  }
+
+  /* ---------- undisclosed box ---------- */
+  (function(){
+    var box = document.getElementById('ubox');
+    if (!dancers.some(function(d){ return d.undisclosed > 0; })){ box.hidden = true; return; }
+    box.appendChild(el('h3', null, '未発表枠'));
+    box.appendChild(el('p', 'note', '本文の出演作品数と公開済みナンバー数の差分（未発表分）'));
+    var ul = el('ul', 'ulist');
+    dancers.filter(function(d){ return d.undisclosed > 0; }).forEach(function(d){
+      var li = el('li');
+      li.dataset.toggle = d.handle;
+      li.setAttribute('role', 'button');
+      li.setAttribute('tabindex', '0');
+      var un = el('span', 'un');
+      un.appendChild(el('b', null, d.name));
+      var i = el('i');
+      i.appendChild(igLink(d.handle));
+      un.appendChild(i);
+      li.appendChild(un);
+      for (var k = 0; k < d.undisclosed; k++) li.appendChild(el('span', 'badge-undisclosed', '未発表'));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  })();
+
+  function renderUbox(){
+    var lis = document.querySelectorAll('#ubox .ulist li[data-toggle]');
+    for (var i = 0; i < lis.length; i++){
+      var on = selected.has(lis[i].dataset.toggle);
+      lis[i].classList.toggle('on', on);
+      lis[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+
+  /* ---------- dancer checkbox list ---------- */
+  var listBox = document.getElementById('dancerList');
+  var cbByHandle = {};
+  (function(){
+    var curGroup = null, grp = null, cbs = null;
+    dancers.forEach(function(d){
+      if (d.s.group !== curGroup){
+        curGroup = d.s.group;
+        grp = el('div', 'grp');
+        grp.dataset.group = curGroup;
+        grp.appendChild(el('h3', null, curGroup));
+        cbs = el('div', 'cbs');
+        grp.appendChild(cbs);
+        listBox.appendChild(grp);
+      }
+      var lab = el('label', 'cb' + (selected.has(d.handle) ? ' on' : ''));
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.className = 'dancer-cb';
+      input.value = d.handle;
+      input.checked = selected.has(d.handle);
+      lab.appendChild(input);
+      var tx = el('span', 'tx');
+      tx.appendChild(el('b', null, d.name));
+      var ti = el('i');
+      ti.appendChild(igLink(d.handle));
+      tx.appendChild(ti);
+      lab.appendChild(tx);
+      cbs.appendChild(lab);
+      cbByHandle[d.handle] = {input:input, label:lab};
+      input.addEventListener('change', function(){
+        if (input.checked) selected.add(d.handle); else selected.delete(d.handle);
+        save();
+        renderAll();
+      });
+    });
+  })();
+
+  /* ---------- selection panel ---------- */
+  function renderSelection(){
+    var panel = document.getElementById('selPanel');
+    var ul = document.getElementById('selList');
+    document.getElementById('selCount').textContent = '選択中 ' + selected.size + '名';
+    panel.hidden = selected.size === 0;
+    document.body.classList.toggle("has-sel", selected.size > 0);
+    ul.textContent = '';
+    dancers.filter(function(d){ return selected.has(d.handle); }).forEach(function(d){
+      var li = el('li');
+      var nm = el('span', 'sel-name', d.name);
+      li.appendChild(nm);
+      li.appendChild(igLink(d.handle, 'sel-handle'));
+      li.appendChild(el('span', 'sel-declared', CIRCLE[d.declared] || ('(' + d.declared + ')')));
+      li.appendChild(el('span', 'sel-arrow', '→'));
+      if (d.nums.length){
+        li.appendChild(document.createTextNode(d.nums.map(function(i){ return shortName(NUMBERS[i].name); }).join(' / ')));
+      } else {
+        li.appendChild(el('span', 'sel-none', '公開済みナンバーなし'));
+      }
+      if (d.undisclosed > 0){
+        li.appendChild(el('span', 'sel-undisclosed', '＋未発表 ×' + d.undisclosed));
+      }
+      ul.appendChild(li);
+    });
+  }
+
+  /* ---------- matrix ---------- */
+  (function(){
+    var t = document.getElementById('matrix');
+    var thead = document.createElement('thead');
+    var hr = document.createElement('tr');
+    var th0 = el('th', 'nm nm-cell', 'ダンサー');
+    hr.appendChild(th0);
+    NUMBERS.forEach(function(n){ hr.appendChild(el('th', 'vt', n.name)); });
+    var HAS_UND = dancers.some(function(d){ return d.undisclosed > 0; });
+    if (HAS_UND) hr.appendChild(el('th', 'un', '未発表'));
+    thead.appendChild(hr);
+    t.appendChild(thead);
+
+    var tb = document.createElement('tbody');
+    dancers.forEach(function(d){
+      var tr = el('tr');
+      tr.dataset.handle = d.handle;
+      var nc = el('td', 'nm');
+      nc.appendChild(el('b', null, d.name));
+      var ni = el('i');
+      ni.appendChild(igLink(d.handle));
+      nc.appendChild(ni);
+      tr.appendChild(nc);
+      NUMBERS.forEach(function(n, i){
+        var td = el('td');
+        if (d.nums.indexOf(i) >= 0) td.appendChild(el('span', 'dot', '●'));
+        tr.appendChild(td);
+      });
+      if (HAS_UND){
+        var ut = el('td');
+        if (d.undisclosed > 0) ut.appendChild(el('span', 'mini-und', '×' + d.undisclosed));
+        tr.appendChild(ut);
+      }
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  })();
+
+  function renderMatrix(){
+    var rows = document.querySelectorAll('#matrix tbody tr[data-handle]');
+    for (var i = 0; i < rows.length; i++){
+      rows[i].classList.toggle('on', selected.has(rows[i].dataset.handle));
+    }
+  }
+
+  function renderCheckboxes(){
+    dancers.forEach(function(d){
+      var c = cbByHandle[d.handle];
+      c.input.checked = selected.has(d.handle);
+      c.label.classList.toggle('on', selected.has(d.handle));
+    });
+  }
+
+  function renderAll(){
+    renderSelection();
+    renderCards();
+    renderUbox();
+    renderMatrix();
+  }
+
+  /* ---------- withdrawn ---------- */
+  (function(){
+    var ul = document.getElementById('wdList');
+    DATA.withdrawn.forEach(function(w){
+      var li = el('li');
+      li.appendChild(el('b', null, w[0]));
+      li.appendChild(document.createTextNode('（'));
+      li.appendChild(igLink(w[1]));
+      li.appendChild(document.createTextNode('）'));
+      li.appendChild(el('i', null, '　出演予定だったナンバー: ' + w[2]));
+      ul.appendChild(li);
+    });
+  })();
+
+  /* ---------- tabs ---------- */
+  var tabs = [].slice.call(document.querySelectorAll('.tab'));
+  tabs.forEach(function(tb){
+    tb.addEventListener('click', function(){
+      tabs.forEach(function(o){
+        var on = o === tb;
+        o.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(o.dataset.panel).hidden = !on;
+      });
+      window.scrollTo(0, 0);
+    });
+  });
+
+  /* ---------- search ---------- */
+  document.getElementById('q').addEventListener('input', function(){
+    var q = this.value.trim().toLowerCase().replace(/^@/, '');
+    var hit = 0;
+    dancers.forEach(function(d){
+      var ok = !q || d.name.toLowerCase().indexOf(q) >= 0 || d.handle.toLowerCase().indexOf(q) >= 0;
+      cbByHandle[d.handle].label.hidden = !ok;
+      if (ok) hit++;
+    });
+    [].slice.call(document.querySelectorAll('.grp')).forEach(function(g){
+      var any = [].slice.call(g.querySelectorAll('.cb')).some(function(c){ return !c.hidden; });
+      g.hidden = !any;
+    });
+    document.getElementById('noHit').hidden = hit > 0;
+  });
+
+  document.getElementById('clearAll').addEventListener('click', function(){
+    selected.clear();
+    save();
+    renderCheckboxes();
+    renderAll();
+  });
+
+  /* ---------- 自分用リスト（Canvasで画像化） ---------- */
+  var MYFONT = 'system-ui, -apple-system, "Hiragino Kaku Gothic ProN", sans-serif';
+  var MYC = {
+    navy:'#1F2C5C', orange:'#E4561E', soft:'#FDF1D3', bg:'#FFF8F2',
+    text:'#26262B', muted:'#7A7068', line:'#EADFD5', navyText:'#FFFFFF'
+  };
+  var measureCtx = document.createElement('canvas').getContext('2d');
+
+  function myFont(size, bold){ return (bold ? '700 ' : '') + size + 'px ' + MYFONT; }
+  function myWidth(text, size, bold){
+    measureCtx.font = myFont(size, bold);
+    return measureCtx.measureText(text).width;
+  }
+  function roundRect(ctx, x, y, w, h, r){
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y); ctx.arcTo(x + w, y, x + w, y + r, r);
+    ctx.lineTo(x + w, y + h - r); ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+    ctx.lineTo(x + r, y + h); ctx.arcTo(x, y + h, x, y + h - r, r);
+    ctx.lineTo(x, y + r); ctx.arcTo(x, y, x + r, y, r);
+    ctx.closePath();
+  }
+  function pad2(n){ return (n < 10 ? '0' : '') + n; }
+  function stamp(){
+    var d = new Date();
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) +
+      ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+
+  function buildMyListCanvas(){
+    var W = 1080, PAD = 48, CW = W - PAD * 2, DPR = 2;
+    var list = dancers.filter(function(d){ return selected.has(d.handle); });
+    var ops = [], y = 0;
+
+    /* --- a. ヘッダー帯 --- */
+    var HDRH = 150;
+    (function(){
+      var l2 = EV.date + '／' + EV.venue;
+      var l3 = EV.time.split(' / ').slice(0, 2).join(' / ');
+      var right = '自分用リスト（' + list.length + '名）';
+      ops.push(function(ctx){
+        ctx.fillStyle = MYC.navy; ctx.fillRect(0, 0, W, HDRH);
+        ctx.fillStyle = MYC.orange; ctx.fillRect(PAD, 46, 36, 7);
+        ctx.fillStyle = '#FFFFFF'; ctx.font = myFont(36, true);
+        ctx.fillText(EV.title, PAD + 50, 64);
+        ctx.textAlign = 'right'; ctx.font = myFont(22, false);
+        ctx.fillText(right, W - PAD, 64);
+        ctx.textAlign = 'left';
+        ctx.fillStyle = MYC.navyText; ctx.font = myFont(22, false);
+        ctx.fillText(l2, PAD, 106);
+        ctx.fillText(l3, PAD, 136);
+      });
+    })();
+    y = HDRH;
+
+    function heading(text){
+      y += 40;
+      var yy = y;
+      ops.push(function(ctx){
+        ctx.fillStyle = MYC.orange; ctx.fillRect(PAD, yy - 25, 6, 31);
+        ctx.fillStyle = MYC.navy; ctx.font = myFont(28, true);
+        ctx.fillText(text, PAD + 18, yy);
+      });
+      y += 16;
+    }
+    function rule(){
+      var yy = y;
+      ops.push(function(ctx){
+        ctx.fillStyle = MYC.line; ctx.fillRect(PAD, yy, CW, 1);
+      });
+      y += 1;
+    }
+
+    /* --- b. ナンバー順 --- */
+    var hitNums = [];
+    NUMBERS.forEach(function(n, i){
+      var mem = list.filter(function(d){ return n.cast.indexOf(d.handle) >= 0; });
+      if (mem.length) hitNums.push({name:n.name, mem:mem});
+    });
+
+    if (hitNums.length){
+      heading('ナンバー順');
+      var leftW = 0;
+      hitNums.forEach(function(r){ leftW = Math.max(leftW, myWidth(r.name, 26, true)); });
+      leftW = Math.min(380, leftW + 24);
+      var availW = CW - leftW;
+      var chipH = 40, chipPadX = 14, gapX = 8, gapY = 8;
+
+      hitNums.forEach(function(r, ri){
+        var lines = [[]], cur = 0;
+        r.mem.forEach(function(d){
+          var cwid = Math.min(availW, myWidth(d.name, 24, false) + chipPadX * 2);
+          if (cur > 0 && cur + gapX + cwid > availW){ lines.push([]); cur = 0; }
+          lines[lines.length - 1].push({t:d.name, w:cwid});
+          cur += (cur > 0 ? gapX : 0) + cwid;
+        });
+        var top = y + 14;
+        var h = lines.length * chipH + (lines.length - 1) * gapY;
+        ops.push(function(ctx){
+          ctx.fillStyle = MYC.navy; ctx.font = myFont(26, true);
+          ctx.fillText(r.name, PAD, top + chipH / 2 + 9);
+          lines.forEach(function(ln, li){
+            var x = PAD + leftW;
+            var ty = top + li * (chipH + gapY);
+            ln.forEach(function(c){
+              ctx.fillStyle = MYC.soft;
+              roundRect(ctx, x, ty, c.w, chipH, 10);
+              ctx.fill();
+              ctx.fillStyle = MYC.navy; ctx.font = myFont(24, false);
+              ctx.fillText(c.t, x + chipPadX, ty + chipH / 2 + 8);
+              x += c.w + gapX;
+            });
+          });
+        });
+        y = top + h + 14;
+        if (ri < hitNums.length - 1) rule();
+      });
+    }
+
+    /* --- d. フッター --- */
+    y += 26;
+    (function(){
+      var yy = y;
+      var txt = '出典: Instagram @dance_synergy_project（' + EV.fetched + '取得）／作成: ' + stamp();
+      ops.push(function(ctx){
+        ctx.fillStyle = MYC.muted; ctx.font = myFont(18, false);
+        ctx.fillText(txt, PAD, yy);
+      });
+    })();
+    y += 28;
+
+    var cv = document.createElement('canvas');
+    cv.width = W * DPR;
+    cv.height = Math.round(y) * DPR;
+    var ctx = cv.getContext('2d');
+    ctx.scale(DPR, DPR);
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = MYC.bg;
+    ctx.fillRect(0, 0, W, y);
+    ops.forEach(function(fn){ fn(ctx); });
+    return cv;
+  }
+
+  var ov = document.getElementById('mylist');
+  var ovImg = document.getElementById('mylistImg');
+  var ovGuide = document.getElementById('mylistGuide');
+  var ovDl = document.getElementById('mylistDl');
+  var ovEmpty = document.getElementById('mylistEmpty');
+  var lastCanvas = null;
+  var GUIDE_FALLBACK = 'ダウンロードできない場合は、画像を長押し（PCは右クリック）→「写真に保存」/「画像を保存」で端末に保存してください';
+  ovDl.addEventListener('click', function(e){
+    if (!(window.claude && typeof window.claude.use === 'function') || !lastCanvas) return; /* 通常環境: <a download> に任せる */
+    e.preventDefault();
+    var c = lastCanvas;
+    window.claude.use('downloads').then(function(dl){
+      if (!dl){ ovGuide.textContent = GUIDE_FALLBACK; return; }
+      c.toBlob(function(blob){
+        if (!blob){ ovGuide.textContent = GUIDE_FALLBACK; return; }
+        ovDl.textContent = '保存中…';
+        dl.save({ filename: 'dance-synergy-revival-mylist.png', data: blob }).then(function(){
+          ovDl.textContent = '保存しました';
+          setTimeout(function(){ ovDl.textContent = '画像をダウンロード'; }, 2500);
+        }).catch(function(err){
+          ovDl.textContent = '画像をダウンロード';
+          if (err && err.code === 'declined') return;
+          ovGuide.textContent = GUIDE_FALLBACK;
+        });
+      }, 'image/png');
+    });
+  });
+
+  function openMyList(){
+    if (selected.size === 0){
+      ovImg.removeAttribute('src');
+      ovImg.hidden = true;
+      ovGuide.hidden = true;
+      ovDl.hidden = true;
+      ovDl.removeAttribute('href');
+      ovEmpty.hidden = false;
+    } else {
+      lastCanvas = buildMyListCanvas();
+      var url = lastCanvas.toDataURL('image/png');
+      ovImg.src = url;
+      ovImg.hidden = false;
+      ovGuide.hidden = false;
+      ovDl.href = url;
+      ovDl.hidden = false;
+      ovEmpty.hidden = true;
+    }
+    ov.hidden = false;
+    document.documentElement.classList.add('mylist-open');
+    document.body.classList.add('mylist-open');
+    ov.scrollTop = 0;
+  }
+  function closeMyList(){
+    ov.hidden = true;
+    document.documentElement.classList.remove('mylist-open');
+    document.body.classList.remove('mylist-open');
+  }
+
+  document.getElementById('btnMyList').addEventListener('click', openMyList);
+  document.getElementById('btnMyList2').addEventListener('click', openMyList);
+  document.getElementById('mylistClose').addEventListener('click', closeMyList);
+  ov.addEventListener('click', function(ev){ if (ev.target === ov) closeMyList(); });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && !ov.hidden) closeMyList();
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
